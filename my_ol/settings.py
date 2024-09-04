@@ -28,7 +28,7 @@ SECRET_KEY = config['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'www.pzagornyak.tmp.fstest.ru']
+ALLOWED_HOSTS = ['127.0.0.1', 'pzagornyak.tmp.fstest.ru']
 
 
 # Application definition
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_erp',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -80,12 +79,18 @@ WSGI_APPLICATION = 'my_ol.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'mssql',  # для подключения к MS SQL
         'NAME': config['DB_NAME'],
         'USER': config['DB_USER'],
         'PASSWORD': config['DB_PASSWORD'],
         'HOST': config['DB_HOST'],
         'PORT': config['DB_PORT'],
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 18 for SQL Server',  # Используемый ODBC драйвер (убедитесь, что он установлен)
+            'extra_params': 'TrustServerCertificate=yes;',  # Дополнительные параметры (например, доверие сертификатам)
+            'timeout': 20,  # Тайм-аут ожидания (в секундах)
+        }
     }
 }
 
@@ -112,9 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
